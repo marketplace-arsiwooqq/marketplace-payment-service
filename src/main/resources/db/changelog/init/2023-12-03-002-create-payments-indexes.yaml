@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-payments-indexes-native
+      author: arseni-herasimovich
+      changes:
+        - runCommand:
+            command: >
+              {
+                "createIndexes": "payments",
+                "indexes": [
+                  {
+                    "key": { "orderId": 1 },
+                    "name": "idx_payments_orderId"
+                  },
+                  {
+                    "key": { "userId": 1 },
+                    "name": "idx_payments_userId"
+                  },
+                  {
+                    "key": { "status": 1 },
+                    "name": "idx_payments_status"
+                  },
+                  {
+                    "key": { "timestamp": 1 },
+                    "name": "idx_payments_timestamp"
+                  }
+                ]
+              }

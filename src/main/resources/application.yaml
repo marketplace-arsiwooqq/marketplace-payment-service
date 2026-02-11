@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: payment-service
+  liquibase:
+    change-log: db/changelog/master.yaml
+    enabled: true
+    driver-class-name: liquibase.ext.mongodb.database.MongoClientDriver
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST:localhost:27017}/${MONGO_DATABASE}?authSource=admin
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      auto-create: ${KAFKA_AUTO_CREATE_TOPICS:true}
+
+kafka:
+  producer:
+    topics:
+      payment-created:
+        name: PAYMENT_CREATED
+        partitions: 6
+        replicas: 3
+        min-insync: 2
+    acks: all
+    request-timeout: 5000
+    enable-idempotence: true
+  consumer:
+    group-id: payment-service
+    trusted-packages: com.arsiwooqq.orderservice.event
+    allow-auto-create-topics: false
+random-number-api:
+  url: http://www.randomnumberapi.com/api/v1.0/random?min=0&max=2&count=1
+logging:
+  level:
+    com.arsiwooqq: ${APP_LOGGING_LEVEL:info}
+
+eureka:
+  client:
+    enabled: ${EUREKA_ENABLED:true}
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true

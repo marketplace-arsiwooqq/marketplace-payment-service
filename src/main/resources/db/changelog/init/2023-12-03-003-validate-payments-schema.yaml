@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: validate-payments-schema-fixed
+      author: arseni-herasimovich
+      changes:
+        - runCommand:
+            command: >
+              {
+                "collMod": "payments",
+                "validator": {
+                  "$jsonSchema": {
+                    "bsonType": "object",
+                    "required": ["_id", "orderId", "userId", "status", "timestamp", "paymentAmount"],
+                    "properties": {
+                      "_id": {
+                        "bsonType": ["binData", "string"],
+                        "description": "Unique identifier for the payment"
+                      },
+                      "orderId": {
+                        "bsonType": "string",
+                        "description": "Unique identifier for the order"
+                      },
+                      "userId": {
+                        "bsonType": "string",
+                        "description": "Identifier for the associated order"
+                      },
+                      "status": {
+                        "bsonType": "string",
+                        "description": "Current status of the payment"
+                      },
+                      "timestamp": {
+                        "bsonType": "date",
+                        "description": "Timestamp when the payment was created"
+                      },
+                      "paymentAmount": {
+                        "bsonType": "long",
+                        "minimum": 0,
+                        "description": "Payment amount"
+                      }
+                    }
+                  }
+                },
+                "validationLevel": "strict"
+              }

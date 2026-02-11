@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include: 
+      file: db/changelog/init/2023-12-03-001-create-payments-collection.yaml
+  - include:
+      file: db/changelog/init/2023-12-03-002-create-payments-indexes.yaml
+  - include:
+      file: db/changelog/init/2023-12-03-003-validate-payments-schema.yaml
